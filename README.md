@@ -34,12 +34,14 @@ Prerequisites: OpenAI API key
 
 ## Things You Should Know
 
->Before running the client for the first time, make sure to place the appropriate DLL (32-bit or 64-bit) in the executable's directory. The required files are available in the repository.
+
 
 >[!NOTE]
 > Make sure to correctly set the **search path** to the `DelphiGenAI` wrapper in your Delphi project settings. This is required for proper compilation and integration.
 
 ![Preview](https://github.com/MaxiDonkey/file2knowledge/blob/main/Images/Genai_path.png?raw=true "Preview")
+
+>Before running the client for the first time, make sure to place the appropriate DLL (32-bit or 64-bit) in the executable's directory. The required files are available in the repository.
 
 >[!WARNING]
 >To access reasoning visualization with O models, you must enable this feature in the Verification section of your [OpenAI account](https://platform.openai.com/settings/organization/general). The activation process takes only a few minutes.
