@@ -18,14 +18,13 @@ This approach enables more contextual, relevant, and intelligent responses when 
 ## Quick Start
 
 ```bash
-cd path\to\your\OpenAIfolder
-git clone https://github.com/Maxi/File2KnowledgeAI.git
+git clone https://github.com/MaxiDonkey/file2Knowledge.git
 ```
-open File2KnowledgeAI.dproj     # Delphi 12 Athens
+open WrapperAssistant.dproj     # Delphi 12 Athens
 Prerequisites: OpenAI API key
 
 ## Dependencies
-- [DelphiGenAI (OpenAI wrapper)](https://github.com/MaxiDonkey/DelphiGenAI) version 1.0.5
+- Add [DelphiGenAI (OpenAI wrapper)](https://github.com/MaxiDonkey/DelphiGenAI) version 1.0.5 to your Delphi project **Library Path** if not globally referenced
 - Delphi 12 Athens (or later)
 - WebView2 Runtime (EdgeView2 for VCL)
 - OpenAI API key (OPENAI_API_KEY)
@@ -36,7 +35,7 @@ Prerequisites: OpenAI API key
 ## Things You Should Know
 
 >[!NOTE]
-> Don't forget to specify the search path for the GenAI wrapper.
+> Make sure to correctly set the **search path** to the `DelphiGenAI` wrapper in your Delphi project settings. This is required for proper compilation and integration.
 
 ![Preview](https://github.com/MaxiDonkey/file2knowledge/blob/main/Images/Genai_path.png?raw=true "Preview")
 
@@ -56,10 +55,14 @@ Prerequisites: OpenAI API key
 
 - UI VCL & WebView2
 
+- Session-based conversational chaining with OpenAI response IDs
+
 ## License
 
 This project is licensed under the [MIT](https://choosealicense.com/licenses/mit/) License.
 
 ## Going further
 
-To view the technical specifications [Refer to deep-dive.md](https://github.com/MaxiDonkey/file2knowledge/blob/main/deep-dive.md)
+**Want the full architecture breakdown?**  
+
+[Read the deep-dive.md](https://github.com/MaxiDonkey/file2knowledge/blob/main/deep-dive.md)
