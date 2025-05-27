@@ -54,4 +54,4 @@ This project is licensed under the [MIT](https://choosealicense.com/licenses/mit
 
 ## Going further
 
-To view the technical specifications [Refer to deep-dive.md](https://github.com/MaxiDonkey/File2knowledgeAI/blob/main/deep-dive.md)
+To view the technical specifications [Refer to deep-dive.md](https://github.com/MaxiDonkey/file2knowledge/blob/main/deep-dive.md)
