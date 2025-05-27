@@ -12,7 +12,7 @@ File2knowledge was designed to provide a concrete implementation of the OpenAI A
 Its main goal: to demonstrate how to leverage advanced file search (file_search) features and the use of vector stores to enhance the semantic processing of documents.
 This approach enables more contextual, relevant, and intelligent responses when querying technical documentation, source code, or any other textual files.
 
-![Preview](https://github.com/MaxiDonkey/File2knowledgeAI/blob/main/Images/F2KAni.gif?raw=true "Preview")
+![Preview](https://github.com/MaxiDonkey/file2knowledge/blob/main/Images/F2KAni.gif?raw=true "Preview")
 
 
 ## Quick Start
@@ -36,7 +36,7 @@ Prerequisites: OpenAI API key
 >[!NOTE]
 > Don't forget to specify the search path for the GenAI wrapper.
 
-![Preview](https://github.com/MaxiDonkey/File2knowledgeAI/blob/main/Images/Genai_path.png?raw=true "Preview")
+![Preview](https://github.com/MaxiDonkey/file2knowledge/blob/main/Images/Genai_path.png?raw=true "Preview")
 
 ## Features
 
