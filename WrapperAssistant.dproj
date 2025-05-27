@@ -121,12 +121,12 @@
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win64)'!=''">
         <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
-        <DCC_UnitSearchPath>Source;VCL;providers;OpenAI\source;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+        <DCC_UnitSearchPath>Source;VCL;providers;D:\2026-developpement\OpenAI\source;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <Icon_MainIcon>WrapperAssistant_Icon.ico</Icon_MainIcon>
-        <UWP_DelphiLogo44>logos\File2knowledgeAI_logo.png</UWP_DelphiLogo44>
-        <UWP_DelphiLogo150>logos\File2knowledgeAI_logo.png</UWP_DelphiLogo150>
+        <UWP_DelphiLogo44>logos\File2knowledge_logo.png</UWP_DelphiLogo44>
+        <UWP_DelphiLogo150>logos\File2knowledge_logo.png</UWP_DelphiLogo150>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
@@ -195,7 +195,7 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="logos\File2knowledgeAI_logo.png" Configuration="Debug" Class="UWP_DelphiLogo44">
+                <DeployFile LocalName="logos\File2knowledge_logo.png" Configuration="Debug" Class="UWP_DelphiLogo44">
                     <Platform Name="Win64">
                         <RemoteDir>Assets\</RemoteDir>
                         <RemoteName>Logo44x44.png</RemoteName>
