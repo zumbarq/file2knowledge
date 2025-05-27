@@ -518,12 +518,12 @@ begin
        function: TVectorResourceItem
        begin
          Result := TVectorResourceItem.Create;
-         Result.Image := '..\..\logos\File2knowledgeAI_logo.png';
+         Result.Image := '..\..\logos\File2knowledge_logo.png';
          Result.Name := 'file2knowledge';
          Result.Description := 'GenAI implementation project through File2knowledge to highlight best practices around the v1/responses endpoint';
          Result.Github := 'https://github.com/MaxiDonkey/file2knowledge';
          Result.Getit := '';
-         Result.Files := ['..\..\data\File2knowledgeAI_part4.txt', '..\..\data\GenAI_documentation.txt'];
+         Result.Files := ['..\..\data\File2knowledge_documentation.txt', '..\..\data\GenAI_documentation.txt'];
        end
     ]);
 end;
