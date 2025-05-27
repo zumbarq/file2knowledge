@@ -268,7 +268,7 @@ end;
 
 procedure TForm1.Label2Click(Sender: TObject);
 begin
-  TWebUrlManager.Open('https://github.com/MaxiDonkey/File2knowledgeAI')
+  TWebUrlManager.Open('https://github.com/MaxiDonkey/file2knowledge')
 end;
 
 procedure TForm1.RegisterIniAndSettings;
