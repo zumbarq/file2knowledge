@@ -61,6 +61,8 @@ Prerequisites: OpenAI API key
 
 - Session-based conversational chaining with OpenAI response IDs
 
+- Web research and reasoning.
+
 ## License
 
 This project is licensed under the [MIT](https://choosealicense.com/licenses/mit/) License.
