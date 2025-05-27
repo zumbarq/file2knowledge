@@ -38,6 +38,9 @@ Prerequisites: OpenAI API key
 
 ![Preview](https://github.com/MaxiDonkey/file2knowledge/blob/main/Images/Genai_path.png?raw=true "Preview")
 
+>[!WARNING]
+>To access reasoning visualization with O models, you must enable this feature in the Verification section of your [OpenAI account](https://platform.openai.com/settings/organization/general). The activation process takes only a few minutes.
+
 ## Features
 
 - Upload .txt / .md → embeddings auto, Vector search handled by OpenAI
