@@ -4,9 +4,7 @@ uses
   Vcl.Forms,
   Main in 'Main.pas' {Form1},
   Vcl.Themes,
-  Vcl.Styles,
-  Helper.ListView.VCL in 'VCL\Helper.ListView.VCL.pas',
-  Manager.FileUploadID.controler in 'source\Manager.FileUploadID.controler.pas';
+  Vcl.Styles;
 
 {$R *.res}
 

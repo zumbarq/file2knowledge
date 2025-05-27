@@ -508,6 +508,14 @@ begin
     FSettings.Chain.Apply(TSettingsProp.SearchModel, mtSearch.GetDefaultModel);
   if FSettings.ReasoningModel.IsEmpty then
     FSettings.Chain.Apply(TSettingsProp.ReasoningModel, mtReasoning.GetDefaultModel);
+  if FSettings.ReasoningEffort.IsEmpty then
+    FSettings.Chain.Apply(TSettingsProp.ReasoningEffort, TIntensity.Default.ToString);
+  if FSettings.ReasoningSummary.IsEmpty then
+    FSettings.Chain.Apply(TSettingsProp.ReasoningSummary, TSummary.Default.ToString);
+  if FSettings.WebContextSize.IsEmpty then
+    FSettings.Chain.Apply(TSettingsProp.WebContextSize, TIntensity.Default.ToString);
+  if FSettings.TimeOut.IsEmpty then
+    FSettings.Chain.Apply(TSettingsProp.TimeOut, TTimeOut.Default.ToString);
 end;
 
 function TSettingsVCL.SearchModel: string;

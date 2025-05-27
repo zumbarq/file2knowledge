@@ -520,8 +520,8 @@ begin
          Result := TVectorResourceItem.Create;
          Result.Image := '..\..\logos\File2knowledgeAI_logo.png';
          Result.Name := 'file2knowledge';
-         Result.Description := 'Projet de mise en application de GenAI à travers File2knowledgeAI pour mettre en avant les bonnes pratiques autour du nouveau point de terminaison v1\/responses';
-         Result.Github := 'https://github.com/MaxiDonkey/File2knowledgeAI';
+         Result.Description := 'GenAI implementation project through File2knowledge to highlight best practices around the v1/responses endpoint';
+         Result.Github := 'https://github.com/MaxiDonkey/file2knowledge';
          Result.Getit := '';
          Result.Files := ['..\..\data\File2knowledgeAI_part4.txt', '..\..\data\GenAI_documentation.txt'];
        end
