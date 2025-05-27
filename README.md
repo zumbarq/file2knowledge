@@ -33,7 +33,7 @@ Prerequisites: OpenAI API key
 
 ![Preview](https://github.com/MaxiDonkey/SynkFlowAI/blob/main/Images/themis.png?raw=true "Preview")
 
-## Something to know
+## Things You Should Know
 
 >[!NOTE]
 > Don't forget to specify the search path for the GenAI wrapper.
