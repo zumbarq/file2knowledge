@@ -33,6 +33,8 @@ Prerequisites: OpenAI API key
 
 ![Preview](https://github.com/MaxiDonkey/SynkFlowAI/blob/main/Images/themis.png?raw=true "Preview")
 
+## Something to know
+
 >[!NOTE]
 > Don't forget to specify the search path for the GenAI wrapper.
 
@@ -40,6 +42,8 @@ Prerequisites: OpenAI API key
 
 >[!WARNING]
 >To access reasoning visualization with O models, you must enable this feature in the Verification section of your [OpenAI account](https://platform.openai.com/settings/organization/general). The activation process takes only a few minutes.
+
+To access the uploaded files and active vector stores, go to the [dashboard](https://platform.openai.com/logs) then navigating to the 'Storage' section.
 
 ## Features
 
