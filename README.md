@@ -44,7 +44,7 @@ Prerequisites: OpenAI API key
 >Before running the client for the first time, make sure to place the appropriate DLL (32-bit or 64-bit) in the executable's directory. The required files are available in the repository.
 
 >[!WARNING]
->To access reasoning visualization with O models, you must enable this feature in the Verification section of your [OpenAI account](https://platform.openai.com/settings/organization/general). The activation process takes only a few minutes.
+>To access reasoning visualization with o-models, you must enable this feature in the Verification section of your [OpenAI account](https://platform.openai.com/settings/organization/general). The activation process takes only a few minutes.
 
 >[!NOTE]
 >To access the uploaded files and active vector stores, go to the [dashboard](https://platform.openai.com/logs) then navigating to the `Storage` section.
