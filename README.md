@@ -34,6 +34,8 @@ Prerequisites: OpenAI API key
 
 ## Things You Should Know
 
+>Before running the client for the first time, make sure to place the appropriate DLL (32-bit or 64-bit) in the executable's directory. The required files are available in the repository.
+
 >[!NOTE]
 > Make sure to correctly set the **search path** to the `DelphiGenAI` wrapper in your Delphi project settings. This is required for proper compilation and integration.
 
