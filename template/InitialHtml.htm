@@ -1,0 +1,168 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+
+  <!-- marked.js for Markdown -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+  <!-- Highlight.js core + GitHub Dark theme -->
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/github-dark.min.css"
+  />
+  <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/languages/delphi.min.js"></script>
+
+  <!-- updated CSS styles -->
+  <style>
+    body {
+      margin: 0;
+      padding: 1em;
+      font-family: Segoe UI, sans-serif;
+      background: #272727;
+      color: #ddd;
+    }
+
+    html, body, #ResponseContent,
+      .chat-bubble, .code-container pre,
+      .code-header, code, pre {
+        font-size: 17px !important;   /* le !important supplante les valeurs déjà fixées */
+        line-height: 1.6;             /* conservez une hauteur de ligne lisible */
+      }
+
+    /* Transparent container + tone-on-tone border */
+    .code-container {
+      background: transparent;
+      border: 1px solid #0d1117;
+      border-radius: 8px;
+      margin: 1em 0;
+      overflow: hidden;
+    }
+
+    /* Dark header unchanged */
+    .code-header {
+      font-family: Consolas, monospace;
+      font-size: 0.85em;
+      padding: 0.4em 0.8em;
+      background: #333;
+      color: #f5f5f5;
+      border-bottom: 1px solid #444;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .copy-btn {
+      font: inherit;
+      border: none;
+      padding: 0.2em 0.6em;
+      border-radius: 4px;
+      background: #007acc;
+      color: #fff;
+      cursor: pointer;
+    }
+    .copy-btn:active {
+      transform: scale(0.96);
+    }
+
+    /* le <pre> reste transparent pour laisser le <code.hljs> afficher son propre fond */
+    .code-container pre {
+      margin: 0;
+      padding: 1em;
+      background: transparent !important;
+      overflow-x: auto;
+      overflow-y: hidden;
+      white-space: pre;
+    }
+
+    .chat-bubble {
+      max-width: 60%;
+      padding: 0.6em 0.8em;
+      margin: 0.3em 0;
+      border-radius: 10px;
+      line-height: 1.4;
+
+      /* conservez les sauts de ligne */
+      white-space: pre-wrap;
+
+      /* découpe n’importe quel mot trop long pour le faire revenir à la ligne */
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+
+    .chat-bubble.user {
+      margin-left: auto;
+      background: #007acc;
+      color: #fff;
+    }
+    .chat-bubble.assistant {
+      margin-right: auto;
+      background: #2d2d2d;
+      color: #ddd;
+    }
+    .chat-bubble {
+      margin: 4.2em 0;
+    }
+    .chat-bubble + * {
+      margin-top: 4.2em;
+    }
+
+    /* --- style de la bulle “loading” --- */
+  .chat-bubble.assistant.loading {
+      position: relative;
+      background: #2d2d2d;
+      color: #ddd;
+      overflow: hidden;
+    }
+    .chat-bubble.assistant.loading::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -150%;
+      width: 50%; height: 100%;
+
+      /* gradient “lumière” */
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,255,255,0.2),
+        transparent
+      );
+      animation: shimmer 1.2s infinite;
+    }
+    @keyframes shimmer {
+      0%   { left: -150%; }
+      100% { left: 150%; }
+    }
+
+   /* 1) Couleur des liens non cliqués */
+   a:link {
+     color: #58a6ff;           /* bleu clair */
+     text-decoration: none;    /* ou underline si vous voulez */
+   }
+
+   /* 2) Couleur des liens déjà visités */
+   a:visited {
+     color: #c792ea;           /* violet pastel */
+   }
+
+   /* 3) Couleur au survol */
+   a:hover {
+      color: #1f6feb;           /* bleu plus foncé */
+     text-decoration: underline;
+   }
+
+   /* 4) Couleur au clic */
+   a:active {
+     color: #bf5fff;           /* violet foncé */
+   }
+  </style>
+</head>
+<body>
+  <div id="ResponseContent"></div>
+  <script>
+    window.onload = () => window.chrome.webview.postMessage("ready");
+  </script>
+</body>
+</html>
+
