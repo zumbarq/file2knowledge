@@ -288,6 +288,15 @@ type
     class procedure Remove(APromise: TObject);
 
     /// <summary>
+    /// Removes later a promise instance from the registry, allowing it
+    /// to be freed if it is no longer referenced elsewhere.
+    /// </summary>
+    /// <param name="APromise">
+    /// The promise instance to unregister.
+    /// </param>
+    class procedure RemoveLater(APromise: TObject);
+
+    /// <summary>
     /// Scans the registry and deletes any promises that are no longer
     /// pending (i.e., fulfilled or rejected), releasing their memory.
     /// </summary>
@@ -385,7 +394,8 @@ begin
             begin
               if Assigned(Proc) then
                 Proc();
-              Reject(AError);
+              Reject(CloneException(AError));
+//              Reject(AError);
             end)
         end)
     end);
@@ -395,12 +405,14 @@ procedure TPromise<T>.Resolve(const AValue: T);
 var
   Handlers: TArray<TProc<T>>;
   Handler: TProc<T>;
+  LValue: T;
 begin
   if FState <> psPending then
     Exit;
 
   FState := psFulfilled;
   FValue := AValue;
+  LValue := AValue;
 
   {--- Copy the locked callback list }
   TMonitor.Enter(FHandlerLock);
@@ -415,7 +427,7 @@ begin
     TThread.Queue(nil,
       procedure
       begin
-        Handler(FValue);
+        Handler(LValue);
       end);
 
   {--- Empty locked lists }
@@ -428,7 +440,7 @@ begin
   end;
 
   {--- Safe destruction because we are out of the register }
-  TPromiseRegistry.Remove(Self);
+  TPromiseRegistry.RemoveLater(Self);
 end;
 
 class function TPromise<T>.Resolved(const AValue: T; Proc: TProc): TPromise<T>;
@@ -454,6 +466,7 @@ procedure TPromise<T>.Reject(AError: Exception);
 var
   Handlers: TArray<TProc<Exception>>;
   Handler: TProc<Exception>;
+  LError: Exception;
 begin
   if FState <> psPending then
     begin
@@ -463,6 +476,7 @@ begin
 
   FState := psRejected;
   FError := AError;
+  LError := AError;
 
   {--- Copy the locked callback list }
   TMonitor.Enter(FHandlerLock);
@@ -477,7 +491,7 @@ begin
     TThread.Queue(nil,
       procedure
       begin
-        Handler(FError);
+        Handler(LError);
       end);
 
   {--- Empty locked lists }
@@ -490,7 +504,7 @@ begin
   end;
 
   {--- Safe destruction because we are out of the register }
-  TPromiseRegistry.Remove(Self);
+  TPromiseRegistry.RemoveLater(Self);
 end;
 
 function TPromise<T>.&Then(AOnFulfill: TProc<T>): TPromise<T>;
@@ -887,6 +901,15 @@ begin
   finally
     TMonitor.Exit(FLock);
   end;
+end;
+
+class procedure TPromiseRegistry.RemoveLater(APromise: TObject);
+begin
+  TThread.Queue(nil,
+    procedure
+    begin
+      Remove(APromise);
+    end);
 end;
 
 initialization

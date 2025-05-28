@@ -429,6 +429,8 @@ procedure TPromptExecutionEngine.FinalizeCurrentTurn;
 begin
   var CurrentTurn := PersistentChat.CurrentPrompt;
 
+  CurrentTurn.Id := ResponseTracking.LastId;
+
   if FileSearchDisplayer.Text.IsEmpty then
     FileSearchDisplayer.Display('no item found');
   CurrentTurn.FileSearch := FileSearchDisplayer.Text;
