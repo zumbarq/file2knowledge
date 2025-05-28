@@ -6,6 +6,13 @@
 Mini-lab Delphi/VCL open source to experiment with the `v1/responses endpoint` of the OpenAI API in a modern environment. 
 Clone & run: the app acts as a tutor for exploring my AI wrappers through the `file_search`, `embeddings`, and `chat` features.
 
+## Changelog
+
+To review the latest changes, please refer to the [changelog](https://github.com/MaxiDonkey/file2knowledge/blob/main/Changelog.md).
+
+>[!IMPORTANT]
+> To perform the update, install [DelphiGenAI](https://github.com/MaxiDonkey/DelphiGenAI) version 1.0.6 and then recompile the project.
+
 ## Introduction
 
 File2knowledge was designed to provide a concrete implementation of the OpenAI API’s `v1/responses endpoint` (necessary for the agentic approach).
