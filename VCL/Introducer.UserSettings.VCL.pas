@@ -28,7 +28,7 @@ interface
 uses
   System.SysUtils, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.ComCtrls, Vcl.Mask,
-  Vcl.Forms, Vcl.Dialogs;
+  Vcl.Buttons, Vcl.Forms, Vcl.Dialogs;
 
 type
   TSettingsIntroducer = record
@@ -47,6 +47,8 @@ type
     TimeOut: TComboBox;
     Country: TMaskEdit;
     City: TMaskEdit;
+    ClearResponseButton: TSpeedButton;
+    DashBoardLabel: TLabel;
     class function Empty: TSettingsIntroducer; static;
   end;
 
@@ -66,6 +68,8 @@ type
     function SetTimeOut(Value: TComboBox): TSettingsIntroducer; inline;
     function SetCountry(Value: TMaskEdit): TSettingsIntroducer; inline;
     function SetCity(Value: TMaskEdit): TSettingsIntroducer; inline;
+    function SetClearResponseButton(Value: TSpeedButton): TSettingsIntroducer; inline;
+    function SetDashBoardLabel(Value: TLabel): TSettingsIntroducer; inline;
   end;
 
 implementation
@@ -93,10 +97,24 @@ begin
   Result := Self;
 end;
 
+function TSettingsIntroducerHelper.SetClearResponseButton(
+  Value: TSpeedButton): TSettingsIntroducer;
+begin
+  Self.ClearResponseButton := Value;
+  Result := Self;
+end;
+
 function TSettingsIntroducerHelper.SetCountry(
   Value: TMaskEdit): TSettingsIntroducer;
 begin
   Self.Country := Value;
+  Result := Self;
+end;
+
+function TSettingsIntroducerHelper.SetDashBoardLabel(
+  Value: TLabel): TSettingsIntroducer;
+begin
+  Self.DashBoardLabel := Value;
   Result := Self;
 end;
 

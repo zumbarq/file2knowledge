@@ -218,7 +218,14 @@ begin
       if Item.Checked then
         begin
           if not Matched then
-            Matched := (*TDataChat*)TChatSession(Item.Data) = PersistentChat.CurrentChat;
+            begin
+              Matched := TChatSession(Item.Data) = PersistentChat.CurrentChat;
+              if Matched then
+                begin
+                  for var Turn in PersistentChat.CurrentChat.Data do
+                    OpenAI.DeleteResponse(Turn.Id);
+                end;
+            end;
           HandleDeletion(nil, Item);
         end;
     end;

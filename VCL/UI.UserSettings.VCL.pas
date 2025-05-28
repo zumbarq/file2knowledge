@@ -48,9 +48,10 @@ uses
   Winapi.Windows, Winapi.Messages, Winapi.CommCtrl,
   System.SysUtils, System.Classes, System.Generics.Collections,
   Vcl.Graphics, Vcl.Controls, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.ComCtrls, Vcl.Mask,
-  Vcl.Forms, Vcl.Dialogs,
+  Vcl.Buttons, Vcl.Forms, Vcl.Dialogs,
   Manager.Intf, Manager.IoC, JSON.Resource, UserSettings.Persistence, UI.Styles.VCL,
-  Helper.ScrollBoxMouseWheel.VCL, Helper.UserSettings, Introducer.UserSettings.VCL;
+  Helper.ScrollBoxMouseWheel.VCL, Helper.UserSettings, Introducer.UserSettings.VCL,
+  ChatSession.Controller, Manager.WebServices;
 
 type
   /// <summary>
@@ -87,6 +88,8 @@ type
     FTimeOut: TComboBox;
     FCountry: TMaskEdit;
     FCity: TMaskEdit;
+    FClearResponseButton: TSpeedButton;
+    FDashBoardLabel: TLabel;
     procedure ReloadFromJSONFile;
     procedure SearchModelCostUpdate;
     procedure ReasoningModelCostUpdate;
@@ -105,6 +108,8 @@ type
     procedure SetTimeOut(const Value: TComboBox);
     procedure SetCountry(const Value: TMaskEdit);
     procedure SetCity(const Value: TMaskEdit);
+    procedure SetClearResponseButton(const Value: TSpeedButton);
+    procedure SetDashBoardLabel(const Value: TLabel);
 
     procedure InitializeComponent(Component: TControl; ChangeHandler: TNotifyEvent = nil);
   protected
@@ -124,6 +129,8 @@ type
     procedure HandleCityChange(Sender: TObject);
     procedure HandleMaskEditKeyPressed(Sender: TObject; var Key: Char);
     procedure HandleMaskEditExit(Sender: TObject);
+    procedure HandleClearResponseIds(Sender: TObject);
+    procedure HandleDashboard(Sender: TObject);
   public
     /// <summary>
     /// Prompts the user to enter their OpenAI API key if it is not already set.
@@ -284,6 +291,8 @@ begin
     SetTimeOut(Introducer.TimeOut);
     SetCountry(Introducer.Country);
     SetCity(Introducer.City);
+    SetClearResponseButton(Introducer.ClearResponseButton);
+    SetDashBoardLabel(Introducer.DashBoardLabel);
   finally
     FLock := False;
   end;
@@ -318,11 +327,28 @@ begin
       .Apply(TSettingsProp.City, FCity.Text).Save;
 end;
 
+procedure TSettingsVCL.HandleClearResponseIds(Sender: TObject);
+begin
+  var Message :=
+    'Please note that this operation will delete orphaned responses and clean up your OpenAI dashboard.' + sLineBreak +
+    'Do you confirm this action?';
+  if AlertService.ShowConfirmation(Message) = mrYes then
+    begin
+      for var id in ResponseTracking.GetOrphans(PersistentChat.GetResponseIds) do
+        OpenAI.DeleteResponse(id);
+    end;
+end;
+
 procedure TSettingsVCL.HandleCountryChange(Sender: TObject);
 begin
   if not FLock then
     FSettings.Chain
       .Apply(TSettingsProp.Country, FCountry.Text).Save;
+end;
+
+procedure TSettingsVCL.HandleDashboard(Sender: TObject);
+begin
+  TWebUrlManager.Open('https://platform.openai.com/logs');
 end;
 
 procedure TSettingsVCL.HandleLeave(Sender: TObject);
@@ -549,6 +575,13 @@ begin
     end);
 end;
 
+procedure TSettingsVCL.SetClearResponseButton(const Value: TSpeedButton);
+begin
+  FClearResponseButton := Value;
+  if Assigned(Value) then
+    Value.OnClick := HandleClearResponseIds;
+end;
+
 procedure TSettingsVCL.SetCountry(const Value: TMaskEdit);
 begin
   FCountry := Value;
@@ -556,6 +589,17 @@ begin
     procedure
     begin
       InitializeComponent(Value, HandleCountryChange);
+    end);
+end;
+
+procedure TSettingsVCL.SetDashBoardLabel(const Value: TLabel);
+begin
+  FDashBoardLabel := Value;
+  TAppStyle.ApplyUserSettingsDashboardLabel(Value,
+    procedure
+    begin
+      FDashBoardLabel.Caption := 'Dashboard OpenAI';
+      FDashBoardLabel.OnClick := HandleDashboard;
     end);
 end;
 

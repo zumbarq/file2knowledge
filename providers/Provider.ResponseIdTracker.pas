@@ -32,7 +32,7 @@ unit Provider.ResponseIdTracker;
 interface
 
 uses
-  System.SysUtils, System.Generics.Collections, Manager.Intf;
+  System.SysUtils, System.Generics.Collections, Helper.TextFile, Manager.Intf;
 
 type
   /// <summary>
@@ -57,11 +57,16 @@ type
   /// </para>
   /// </remarks>
   TOpenAIChatTracking = class(TInterfacedObject, IOpenAIChatTracking)
+  const
+    LOGIDS_FILENAME = 'LogIds.txt';
   private
     FIds: TList<string>;
     FLastId: string;
     FDeleteProc: TProc<string>;
+    FLogIds: TList<string>;
     function GetLastId: string;
+    procedure LoadLog(const FileName: string);
+    procedure SaveLog(const FileName: string);
   public
     /// <summary>
     /// Initializes a new instance of the <c>TOpenAIChatTracking</c> class.
@@ -102,6 +107,21 @@ type
     procedure Cancel;
 
     /// <summary>
+    /// Remove the responseId from LogId
+    /// </summary>
+    procedure RemoveId(const ResponseId: string);
+
+    /// <summary>
+    /// Get the list of the responseId
+    /// </summary>
+    function GetLogIds: string;
+
+    /// <summary>
+    /// Get the orphaned responseId
+    /// </summary>
+    function GetOrphans(const SessionIds: TArray<string>): TArray<string>;
+
+    /// <summary>
     /// Gets the last tracked unique identifier.
     /// </summary>
     property LastId: string read GetLastId;
@@ -116,7 +136,9 @@ begin
   if not Value.Trim.IsEmpty and (FIds.LastIndexOf(Value) = -1) then
     begin
       FIds.add(Value);
+      FLogIds.Add(Value);
       FLastId := Value;
+      SaveLog(LOGIDS_FILENAME);
     end;
 end;
 
@@ -139,7 +161,9 @@ constructor TOpenAIChatTracking.Create(const DeleteProc: TProc<string>);
 begin
   inherited Create;
   FIds := TList<string>.Create;
+  FLogIds := TList<string>.Create;
   FDeleteProc := DeleteProc;
+  LoadLog(LOGIDS_FILENAME);
 end;
 
 procedure TOpenAIChatTracking.Delete(const Value: string);
@@ -153,12 +177,57 @@ end;
 destructor TOpenAIChatTracking.Destroy;
 begin
   FIds.Free;
+  FLogIds.Free;
   inherited;
 end;
 
 function TOpenAIChatTracking.GetLastId: string;
 begin
   Result := FLastId;
+end;
+
+function TOpenAIChatTracking.GetLogIds: string;
+begin
+  Result := string.Join(sLineBreak, FLogIds.ToArray);
+end;
+
+function TOpenAIChatTracking.GetOrphans(
+  const SessionIds: TArray<string>): TArray<string>;
+var
+  SessionSet: TDictionary<string, Byte>;
+  item: string;
+begin
+  SessionSet := TDictionary<string, Byte>.Create;
+  try
+    for item in SessionIds do
+      SessionSet.AddOrSetValue(item, 0);
+
+    for item in FLogIds do
+      if not SessionSet.ContainsKey(item) then
+        Result := Result + [item];
+  finally
+    SessionSet.Free;
+  end;
+end;
+
+procedure TOpenAIChatTracking.LoadLog(const FileName: string);
+begin
+  if FileExists(FileName) then
+    begin
+      var Raw := TFileIOHelper.LoadFromFile(FileName);
+      FLogIds.AddRange(Raw.Split([sLineBreak], TStringSplitOptions.ExcludeEmpty));
+    end;
+end;
+
+procedure TOpenAIChatTracking.RemoveId(const ResponseId: string);
+begin
+  if FLogIds.Remove(ResponseId) <> -1 then
+    SaveLog(LOGIDS_FILENAME);
+end;
+
+procedure TOpenAIChatTracking.SaveLog(const FileName: string);
+begin
+  TFileIOHelper.SaveToFile(FileName, GetLogIds);
 end;
 
 end.

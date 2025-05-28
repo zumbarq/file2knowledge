@@ -15,6 +15,7 @@ type
     class procedure ApplyUserSettingsComboBoxStyle(Value: TComboBox; Proc: TProc = nil);
     class procedure ApplyUserSettingsComboBoxStyleStar(Value: TComboBox; Proc: TProc = nil);
     class procedure ApplyUserSettingsMaskEditStyle(Value: TMaskEdit; Proc: TProc; Password: Boolean = False);
+    class procedure ApplyUserSettingsDashboardLabel(Value: TLabel; Proc: TProc = nil);
 
     {--- Refer to UI.PageSelector.VCL }
     class procedure ApplyPageSelectorLabelStyle(Value: TLabel; Proc: TProc = nil);
@@ -88,6 +89,21 @@ begin
   Value.Font.Color := clYellow;
   Value.Font.Size := 11;
   Value.TabStop := False;
+
+  if Assigned(Proc) then
+    Proc();
+end;
+
+class procedure TAppStyle.ApplyUserSettingsDashboardLabel(Value: TLabel;
+  Proc: TProc);
+begin
+  if not Assigned(Value) then
+    Exit;
+
+  Value.Cursor := crHandPoint;
+  Value.Font.Color := clGray;
+  Value.Font.Style := [fsUnderline];
+  Value.StyleElements := [seClient, seBorder];
 
   if Assigned(Proc) then
     Proc();

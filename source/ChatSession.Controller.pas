@@ -296,6 +296,11 @@ type
     procedure Clear;
 
     /// <summary>
+    /// Returns the list of ResponseIds
+    /// </summary>
+    function GetResponseIds: TArray<string>;
+
+    /// <summary>
     /// Gets the full collection of chat sessions.
     /// </summary>
     property Data: TChatSessionList read GetData;
@@ -327,6 +332,7 @@ type
     procedure SaveToFile(FileName: string = '');
     procedure Clear;
     function Count: Integer;
+    function GetResponseIds: TArray<string>;
     property Data: TChatSessionList read GetData;
     property CurrentChat: TChatSession read GetCurrentChat write SetCurrentChat;
     property CurrentPrompt: TChatTurn read GetCurrentPrompt;
@@ -391,6 +397,18 @@ end;
 function TPersistentChat.GetData: TChatSessionList;
 begin
   Result := FData;
+end;
+
+function TPersistentChat.GetResponseIds: TArray<string>;
+begin
+  for var Session in FData.Data do
+   for var Turn in Session.Data do
+     begin
+       if Length(Result) = 0 then
+         Result := [Turn.Id]
+       else
+         Result := Result + [Turn.Id];
+     end;
 end;
 
 function TPersistentChat.LoadFromFile(FileName: string): string;

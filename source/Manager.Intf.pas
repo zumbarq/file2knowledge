@@ -904,6 +904,21 @@ type
     procedure Cancel;
 
     /// <summary>
+    /// Remove the responseId from LogId
+    /// </summary>
+    procedure RemoveId(const ResponseId: string);
+
+    /// <summary>
+    /// Get the list of the responseId
+    /// </summary>
+    function GetLogIds: string;
+
+    /// <summary>
+    /// Get the orphaned responseId
+    /// </summary>
+    function GetOrphans(const SessionIds: TArray<string>): TArray<string>;
+
+    /// <summary>
     /// Gets the last tracked unique identifier.
     /// </summary>
     property LastId: string read GetLastId;

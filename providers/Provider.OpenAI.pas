@@ -323,11 +323,13 @@ begin
           Result.OnSuccess :=
             procedure (Sender: TObject; Value: TResponseDelete)
             begin
+              ResponseTracking.RemoveId(ResponseId);
               Resolve(Value.Id + ' deleted');
             end;
           Result.OnError :=
             procedure (Sender: TObject; Error: string)
             begin
+              ResponseTracking.RemoveId(ResponseId);
               Reject(Exception.Create(Error));
             end;
         end);

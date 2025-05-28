@@ -4,7 +4,8 @@ uses
   Vcl.Forms,
   Main in 'Main.pas' {Form1},
   Vcl.Themes,
-  Vcl.Styles;
+  Vcl.Styles,
+  Helper.TextFile in 'source\Helper.TextFile.pas';
 
 {$R *.res}
 

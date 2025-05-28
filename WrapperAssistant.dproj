@@ -116,8 +116,10 @@
         <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Locale>1033</VerInfo_Locale>
-        <DCC_UnitSearchPath>source;VCL;D:\2026-developpement\OpenAI\source;providers;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
-        <Icon_MainIcon>$(ProjectName).Artwork\Windows\AppIcon.ico</Icon_MainIcon>
+        <DCC_UnitSearchPath>source;VCL;providers;OpenAI\source;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+        <Icon_MainIcon>WrapperAssistant_Icon.ico</Icon_MainIcon>
+        <UWP_DelphiLogo44>logos\File2knowledge_logo.png</UWP_DelphiLogo44>
+        <UWP_DelphiLogo150>logos\File2knowledge_logo.png</UWP_DelphiLogo150>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win64)'!=''">
         <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
@@ -151,6 +153,7 @@
             <Form>Form1</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="source\Helper.TextFile.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
@@ -189,9 +192,10 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="Win64\Debug\WrapperAssistant.rsm" Configuration="Debug" Class="DebugSymbols">
-                    <Platform Name="Win64">
-                        <RemoteName>WrapperAssistant.rsm</RemoteName>
+                <DeployFile LocalName="logos\File2knowledge_logo.png" Configuration="Debug" Class="UWP_DelphiLogo44">
+                    <Platform Name="Win32">
+                        <RemoteDir>Assets\</RemoteDir>
+                        <RemoteName>Logo44x44.png</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>

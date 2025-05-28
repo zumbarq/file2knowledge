@@ -472,6 +472,7 @@ end;
 function TEHCreate.Handle(const Chunk: TResponseStream; var StreamBuffer: string;
   var ChunkDisplayedCount: Integer): Boolean;
 begin
+  PersistentChat.CurrentPrompt.Id := Chunk.Response.Id;
   ResponseTracking.Add(Chunk.Response.Id);
   Result := True;
 end;
@@ -502,10 +503,7 @@ begin
   Result := True;
   EdgeDisplayer.HideReasoning;
   var Delta := TUtf8Mapping.CleanTextAsUTF8(Chunk.Delta);
-  try
-    EdgeDisplayer.DisplayStream(Delta, (ChunkDisplayedCount < 20) );
-  except
-  end;
+  EdgeDisplayer.DisplayStream(Delta, (ChunkDisplayedCount < 20) );
   ChunkDisplayedCount := ChunkDisplayedCount + 1;
   StreamBuffer := StreamBuffer + Delta;
 end;
@@ -642,6 +640,7 @@ function TEHOutputItemDone.Handle(const Chunk: TResponseStream;
   var StreamBuffer: string; var ChunkDisplayedCount: Integer): Boolean;
 begin
   Result := True;
+
   if Chunk.Item.Id.ToLower.StartsWith('msg_') then
     begin
       if PersistentChat.CurrentPrompt.JsonResponse.Trim.IsEmpty then

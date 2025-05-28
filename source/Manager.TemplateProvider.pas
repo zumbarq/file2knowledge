@@ -18,7 +18,7 @@ unit Manager.TemplateProvider;
 interface
 
 uses
-  System.SysUtils, System.IOUtils, Manager.Intf;
+  System.SysUtils, System.IOUtils, Helper.TextFile, Manager.Intf;
 
 const
   TEMPLATE_PATH = '..\..\template';
@@ -175,10 +175,8 @@ end;
 function TEdgeInjection.LoadTemplate(const FileName: string): string;
 begin
   var GetHtmlPath := TPath.Combine(GetPath(FPath), FileName);
-  if TFile.Exists(GetHtmlPath) then
-    Result := TFile.ReadAllText(GetHtmlPath, TEncoding.UTF8)
-  else
-    raise Exception.CreateFmt('The template file was not found : %s', [GetHtmlPath]);
+
+  Result := TFileIOHelper.LoadFromFile(GetHtmlPath);
 end;
 
 procedure TEdgeInjection.SetTemplatePath(const Value: string);

@@ -193,7 +193,7 @@ begin
             .&Catch(
               procedure(E: Exception)
               begin
-//                AlertService.ShowError(E.Message);
+                AlertService.ShowError(E.Message);
 //                EdgeDisplayer.DisplayStream(E.Message);
               end);
         end;

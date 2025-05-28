@@ -44,7 +44,9 @@ uses
   System.SysUtils, System.classes, System.Generics.Collections, System.DateUtils, System.Threading,
   GenAI, GenAI.Types,
   Manager.Async.Promise, Manager.Intf, Manager.IoC, ChatSession.Controller, Manager.Utf8Mapping,
-  Helper.UserSettings, Manager.Types, Provider.InstructionManager, Provider.OpenAI.StreamEvents;
+  Helper.UserSettings, Manager.Types, Provider.InstructionManager, Provider.OpenAI.StreamEvents,
+
+  Helper.TextFile;
 
 type
   /// <summary>
@@ -375,17 +377,12 @@ begin
           Result.OnProgress :=
             procedure (Sender: TObject; Chunk: TResponseStream)
             begin
-              try
-                if not FEventEngineManager.AggregateStreamEvents(Chunk, StreamBuffer, ChunkDisplayedCount) then
-                  begin
-                    {--- Event error }
-                    ResponseTracking.Cancel;
-                    Reject(Exception.Create('(' + Chunk.Code + ')' + Chunk.Message));
-                  end;
-              except
-                {--- Silent Exception - To avoid RSS-391 error for unpatched 12.1.
-                     And also if a processing in AggregateStreamEvents generated an error }
-              end;
+              if not FEventEngineManager.AggregateStreamEvents(Chunk, StreamBuffer, ChunkDisplayedCount) then
+                begin
+                  {--- Event error }
+                  ResponseTracking.Cancel;
+                  Reject(Exception.Create('(' + Chunk.Code + ')' + Chunk.Message));
+                end;
             end;
 
           Result.OnSuccess :=
@@ -429,8 +426,6 @@ procedure TPromptExecutionEngine.FinalizeCurrentTurn;
 begin
   var CurrentTurn := PersistentChat.CurrentPrompt;
 
-  CurrentTurn.Id := ResponseTracking.LastId;
-
   if FileSearchDisplayer.Text.IsEmpty then
     FileSearchDisplayer.Display('no item found');
   CurrentTurn.FileSearch := FileSearchDisplayer.Text;
@@ -458,6 +453,7 @@ end;
 procedure TPromptExecutionEngine.OnTurnError(Sender: TObject; Error: string);
 begin
   FinalizeCurrentTurn;
+  ResponseTracking.Cancel;
   EdgeDisplayer.HideReasoning;
   EdgeDisplayer.Display(TUtf8Mapping.CleanTextAsUTF8(Error));
   Cancellation.Cancel;
