@@ -1,4 +1,4 @@
-unit Provider.OpenAI.ExecutionEngine;
+﻿unit Provider.OpenAI.ExecutionEngine;
 
 (*
   Unit: Provider.OpenAI.ExecutionEngine
@@ -289,6 +289,21 @@ begin
             end
           else
             begin
+              (*
+                 If the previous round of the session used a reasoning model, then this round will return:
+
+                     400 Bad Request
+                         Reasoning input items can only be provided to a reasoning or computer use model.
+                         Remove reasoning items from your input and try again.
+
+                 As soon as you chain a reasoning-model call → non-reasoning-model call using previousResponseId,
+                 all input items—including those labeled type: "reasoning"—get passed back into gpt-4.1, triggering:
+
+                   - Reasoning input items can only be provided to a reasoning or computer use model
+
+                 Bug reported to OpenAI support on 05/29/2025
+                 https://community.openai.com/t/400-error-when-chaining-sessions-between-4-1-and-o4-mini/1272381/1
+              *)
               Params.Model(Settings.SearchModel);
             end;
 
@@ -346,7 +361,6 @@ begin
               {--- No web search tool available for reasoning model }
             end;
 
-          {--- Enable file_search results inclusion }
           Params.Include([TOutputIncluding.file_search_result]);
 
           {--- Enable streaming mode for the response }
@@ -377,12 +391,16 @@ begin
           Result.OnProgress :=
             procedure (Sender: TObject; Chunk: TResponseStream)
             begin
-              if not FEventEngineManager.AggregateStreamEvents(Chunk, StreamBuffer, ChunkDisplayedCount) then
-                begin
-                  {--- Event error }
-                  ResponseTracking.Cancel;
-                  Reject(Exception.Create('(' + Chunk.Code + ')' + Chunk.Message));
-                end;
+              try
+                if not FEventEngineManager.AggregateStreamEvents(Chunk, StreamBuffer, ChunkDisplayedCount) then
+                  begin
+                    {--- Event error }
+                    ResponseTracking.Cancel;
+                    Reject(Exception.Create('(' + Chunk.Code + ')' + Chunk.Message));
+                  end;
+              except
+
+              end;
             end;
 
           Result.OnSuccess :=
@@ -407,7 +425,7 @@ begin
               if Result then
                 begin
                   EdgeDisplayer.HideReasoning;
-                  EdgeDisplayer.Display('Operation canceled');
+                  EdgeDisplayer.Display(#10'Operation canceled');
                 end;
             end;
 

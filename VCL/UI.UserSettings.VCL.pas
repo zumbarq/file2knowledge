@@ -791,7 +791,7 @@ end;
 
 function TSettingsVCL.UseSummary: Boolean;
 begin
-  Result := not FSettings.ReasoningSummary.Trim.Contains('none');
+  Result := not FSettings.ReasoningSummary.Trim.ToLower.Contains('none');
 end;
 
 function TSettingsVCL.WebContextSize: string;

@@ -111,6 +111,7 @@ type
     FNewRightBtn: TButton;
     FPanel: TPanel;
     FCaptionPanel: TPanel;
+    FTitlePanel: TPanel;
     FState: TOpenCloseState;
     FResize: TProc<TObject>;
     procedure SetScrollBox(const Value: TScrollBox);
@@ -173,53 +174,59 @@ implementation
 procedure TLeftPanelControl.AnimatePanelAsync(APanel: TPanel;
   const TargetWidth: Integer);
 const
-  PIXEL_STEP   = 24;
-  FRAME_PAUSE  = 22;   // ms
+  MaxStep = 84;
+  MinStep = 4;
+  FRAME_PAUSE = 22; // ms
+var
+  StartWidth, TotalDelta: Integer;
 begin
-  var StartWidth := APanel.Width;
+  StartWidth := APanel.Width;
+  TotalDelta := TargetWidth - StartWidth;
+
+  if TotalDelta = 0 then
+    Exit;
 
   TTask.Run(
     procedure
     var
-      CurW, Step: Integer;
+      CurW, Remaining, Step: Integer;
+      Ratio: Double;
     begin
       CurW := StartWidth;
 
-      if CurW = TargetWidth then
-        Exit;
-
-      if CurW < TargetWidth then
-        Step := PIXEL_STEP else
-        Step := -PIXEL_STEP;
-
       while CurW <> TargetWidth do
-      begin
-        Inc(CurW, Step);
-        if ((Step > 0) and (CurW > TargetWidth)) or
-           ((Step < 0) and (CurW < TargetWidth)) then
-          CurW := TargetWidth;
+        begin
+          Remaining := TargetWidth - CurW;
+          Ratio := Abs(Remaining) / Abs(TotalDelta);
+          Step := Round(MinStep + (MaxStep - MinStep) * Ratio);
+          if Step > Abs(Remaining) then
+            Step := Abs(Remaining);
 
-        TThread.Queue(nil,
-          procedure
-          begin
-            APanel.DisableAlign;
-            try
-              APanel.Parent.DisableAlign;
+          if Remaining < 0 then
+            Step := -Step;
+
+          Inc(CurW, Step);
+
+          TThread.Queue(nil,
+            procedure
+            begin
+              APanel.DisableAlign;
               try
-                APanel.SetBounds(APanel.Left, APanel.Top, CurW, APanel.Height);
-                APanel.Update;
-                FResize(nil);
+                APanel.Parent.DisableAlign;
+                try
+                  APanel.SetBounds(APanel.Left, APanel.Top, CurW, APanel.Height);
+                  APanel.Update;
+                  FResize(nil);
+                finally
+                  APanel.Parent.EnableAlign;
+                end;
               finally
-                APanel.Parent.EnableAlign;
+                APanel.EnableAlign;
               end;
-            finally
-              APanel.EnableAlign;
-            end;
-          end);
+            end);
 
-        Sleep(FRAME_PAUSE);
-
-      end;
+          Sleep(FRAME_PAUSE);
+        end;
     end);
 end;
 
